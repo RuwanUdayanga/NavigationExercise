@@ -50,6 +50,14 @@ fun Navigation(){
         ){backStackEntry ->
             DetailScreen(name = backStackEntry.arguments?.getString("name"),navController= navController)
         }
+        composable(
+            route = "detail_screen2/{name}/{age}",
+            arguments = listOf(navArgument("age") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            DetailScreen2(name = backStackEntry.arguments?.getString("name"),age = backStackEntry.arguments?.getString("age"), navController = navController)
+        }
 
     }
 }
@@ -110,5 +118,43 @@ fun DetailScreen(name: String?,navController: NavController){
             text2 = it
         }
         )
+        Spacer(modifier =Modifier.height(10.dp))
+        Button(
+            onClick = { navController.navigate(Screen.DetailScreen2.withArgs(name,text2)) },
+            modifier = Modifier) {
+            Text(text = "Enter age")
+        }
+        Spacer(modifier =Modifier.height(10.dp))
+        Button(
+            onClick = { navController.navigate(Screen.MainScreen.route) },
+            modifier = Modifier) {
+            Text(text = "Go Back")
+        }
+    }
+}
+@Composable
+fun DetailScreen2(name: String?,age: String?, navController: NavController) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 50.dp)
+    )
+    {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "$name your Age is $age!")
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                navController.navigate(Screen.DetailScreen.withArgs(name))
+            },
+            modifier = Modifier
+        ) {
+            Text(text = "Go Back")
+        }
     }
 }
